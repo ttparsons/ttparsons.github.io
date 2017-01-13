@@ -1,0 +1,456 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link href="../css/templatemo_style.css" rel="stylesheet" type="text/css" />
+
+<link href="../css/jquery.ennui.contentslider.css" rel="stylesheet" type="text/css" media="screen,projection" />
+
+</head>
+
+<body>
+<h3>WunderWeather - A Rainmeter Widget</h3>
+<p>This is a custom widget I created to show the current weather on your desktop, complete with forecast and stylish icons. If you haven't head of Rainmeter before, check out the other link in the sidebar to the left. The widget pulls the weather for your location based off your IP address by using the Weather Underground API. The icons are from Weather Underground as well, I just modified them to remove their white outlines and convert them to PNGs.</p>
+<p>&nbsp;</p>
+<p>Here is what it looks like:</p>
+<p>&nbsp;</p>
+<p><center><img src="../images/programs/wunderweather/shot.PNG" /></center></p>
+<p>&nbsp;</p>
+<p>To get it up and running, you just need to get a free Weather Underground API key <a href="https://www.wunderground.com/weather/api/" target="new">here</a>. Plug it into the code and it is good to go! You can change the URL from autoip.xml to yourzipcode.xml if you prefer to specify your exact location. </p>
+<p>&nbsp;</p>
+<p>To download in an installer format that will automatically load into Rainmeter, click <a href="../downloads/TP_WunderWeather_v2.rmskin">here</a>. To download as a RAR, click <a href="../downloads/TP_WunderWeather_v2.rar">here</a>. You can also view my submission to customize.org <a href="http://customize.org/rainmeter/skins/65677836" target="new">here</a>.</p>
+<p>&nbsp;</p>
+<p>Below is the code, if anyone is interested!</p>
+
+<div id="codeblock">
+  <p>;======================================================================================<br />
+    ; Rainmeter configuration file<br />
+    ; Updated March 39, 2016<br />
+    ; By Travis Parsons<br />
+    ; https://www.ocf.berkeley.edu/~parsons/programming.html<br />
+    ; v2.0 - Added a &quot;Last Updated&quot; field so you know your weather is up to date.<br />
+  ;======================================================================================</p>
+  <p>[Metadata]<br />
+    Name=WunderWeather<br />
+    Author=Travis Parsons<br />
+    Information=Displays weather forecast using Weather Underground API and Icons<br />
+    License=Attribution-NonCommercial-ShareAlike 4.0 International<br />
+    Version=2.0</p>
+  <p>;======================================================================================<br />
+    ; How to customize this skin:<br />
+    ;======================================================================================<br />
+    ; Step One: Enter your Wunderground API key below in the &quot;ApiKey&quot; variable<br />
+    ;          To get a free key, visit https://www.wunderground.com/weather/api/<br />
+    ;<br />
+    ; Step Two: Change &quot;Degrees&quot; to either fahrenheit or celsius<br />
+    ;<br />
+    ; Step Three: Change &quot;Degree&quot; to F or C, depending on your choice in step two.<br />
+    ;<br />
+    ; Step Four: Either enter your specific zip code in &quot;Zip&quot;, or leave it on autoip<br />
+    ;<br />
+    ; Enjoy!<br />
+    ;======================================================================================</p>
+  <p>[Variables]<br />
+    ApiKey=YOUR API KEY HERE<br />
+    Degrees = fahrenheit<br />
+    Degree = F<br />
+    Zip = autoip<br />
+    Font=Century Gothic<br />
+    FontColor=255, 255, 255, 255</p>
+  <p>[Rainmeter]<br />
+    Update=1000</p>
+  <p>;======================================================================================<br />
+    ; End of variables you can set - Don't change anything below<br />
+    ;======================================================================================<br />
+    ;======================================================================================<br />
+    ;Get Weather Data in XML format and parse it<br />
+    ;======================================================================================<br />
+    [WeatherForecast]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    UpdateRate=2750<br />
+    Url=http://api.wunderground.com/api/#ApiKey#/conditions/hourly/forecast/q/#Zip#.xml<br />
+    RegExp=(?siU)&lt;weather&gt;(.*)&lt;/weather&gt;.*&lt;temp_#Degree#&gt;(.*)&lt;/temp_#Degree#&gt;.*&lt;feelslike_#Degree#&gt;(.*)&lt;/feelslike_#Degree#&gt;.*&lt;icon&gt;(.*)&lt;/icon&gt;.*&lt;weekday&gt;(.*)&lt;/weekday&gt;.*&lt;#Degrees#&gt;(.*)&lt;/#Degrees#&gt;.*&lt;#Degrees#&gt;(.*)&lt;/#Degrees#&gt;.*&lt;conditions&gt;(.*)&lt;/conditions&gt;.*&lt;icon&gt;(.*)&lt;/icon&gt;.*&lt;weekday&gt;(.*)&lt;/weekday&gt;.*&lt;#Degrees#&gt;(.*)&lt;/#Degrees#&gt;.*&lt;#Degrees#&gt;(.*)&lt;/#Degrees#&gt;.*&lt;conditions&gt;(.*)&lt;/conditions&gt;.*&lt;icon&gt;(.*)&lt;/icon&gt;.*&lt;weekday&gt;(.*)&lt;/weekday&gt;.*&lt;#Degrees#&gt;(.*)&lt;/#Degrees#&gt;.*&lt;#Degrees#&gt;(.*)&lt;/#Degrees#&gt;.*&lt;conditions&gt;(.*)&lt;/conditions&gt;.*&lt;icon&gt;(.*)&lt;/icon&gt;</p>
+  <p>;======================================================================================<br />
+    ;Extract current weather &amp; time information<br />
+    ;======================================================================================</p>
+  <p>[MeasureTime]<br />
+    Measure=Time<br />
+    Format=&quot;Updated %A at %I:%M %p&quot;<br />
+    UpdateDivider=-1</p>
+  <p>[GetCurrentDesc]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=1</p>
+  <p>[GetCurrentTemp]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=2</p>
+  <p>[GetCurrentFeel]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=3</p>
+  <p>[GetCurrentIcon]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=4</p>
+  <p>;======================================================================================<br />
+    ;Extract weather for today<br />
+    ;======================================================================================</p>
+  <p>[GetTodayDay]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=5</p>
+  <p>[GetTodayHigh]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=6</p>
+  <p>[GetTodayLow]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=7</p>
+  <p>[GetTodayDesc]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=8</p>
+  <p>[GetTodayIcon]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=9</p>
+  <p>;======================================================================================<br />
+    ;Extract weather for tomorrow<br />
+    ;======================================================================================</p>
+  <p>[GetTomorrowDay]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=10</p>
+  <p>[GetTomorrowHigh]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=11</p>
+  <p>[GetTomorrowLow]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=12</p>
+  <p>[GetTomorrowDesc]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=13</p>
+  <p>[GetTomorrowIcon]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=14</p>
+  <p>;======================================================================================<br />
+    ;Extract weather for day after<br />
+    ;======================================================================================</p>
+  <p>[GetDayAfterDay]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=15</p>
+  <p>[GetDayAfterHigh]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=16</p>
+  <p>[GetDayAfterLow]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=17</p>
+  <p>[GetDayAfterDesc]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=18</p>
+  <p>[GetDayAfterIcon]<br />
+    Measure=Plugin<br />
+    Plugin=Plugins\WebParser.dll<br />
+    Url=[WeatherForecast]<br />
+    StringIndex=19</p>
+  <p>;======================================================================================<br />
+    ;Display current weather &amp; time<br />
+    ;======================================================================================</p>
+  <p>[DisplayDateTime]<br />
+    MeasureName=MeasureTime<br />
+    Meter=STRING<br />
+    X=490<br />
+    Y=275<br />
+    FontColor=#FontColor#<br />
+    StringStyle=NORMAL<br />
+    FontSize=10<br />
+    StringAlign=RIGHT<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1</p>
+  <p>[DisplayCurrentTemp]<br />
+    MeasureName=GetCurrentTemp<br />
+    Meter=STRING<br />
+    X=365<br />
+    Y=5<br />
+    FontColor=#FontColor#<br />
+    StringStyle=NORMAL<br />
+    FontSize=36<br />
+    StringAlign=RIGHT<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1<br />
+    Postfix=&quot;°&quot;</p>
+  <p>[DisplayCurrentText]<br />
+    Text=Right Now<br />
+    Meter=STRING<br />
+    X=190<br />
+    Y=15<br />
+    FontColor=#FontColor#<br />
+    FontSize=13<br />
+    StringAlign=RIGHT<br />
+    StringStyle=NORMAL<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1</p>
+  <p>[DisplayCurrentDescription]<br />
+    MeasureName=GetCurrentDesc<br />
+    Meter=STRING<br />
+    X=190<br />
+    Y=35<br />
+    FontColor=#FontColor#<br />
+    FontSize=13<br />
+    StringAlign=RIGHT<br />
+    StringStyle=NORMAL<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1</p>
+  <p>[DisplayCurrentFeelText]<br />
+    Text=Feels Like<br />
+    Meter=STRING<br />
+    X=430<br />
+    Y=13<br />
+    FontColor=#FontColor#<br />
+    FontSize=10<br />
+    StringAlign=RIGHT<br />
+    StringStyle=NORMAL<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1</p>
+  <p>[DisplayCurrentFeel]<br />
+    MeasureName=GetCurrentFeel<br />
+    Meter=STRING<br />
+    X=415<br />
+    Y=30<br />
+    FontColor=#FontColor#<br />
+    FontSize=14<br />
+    StringAlign=RIGHT<br />
+    StringStyle=NORMAL<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1<br />
+    Postfix=&quot;°&quot;</p>
+  <p>[DisplayCurrentIcon]<br />
+    MeasureName=GetCurrentIcon<br />
+    Meter=IMAGE<br />
+    H=64<br />
+    W=64<br />
+    X=430<br />
+    Y=0<br />
+    Hidden=0</p>
+  <p>;======================================================================================<br />
+    ;Display weather for today<br />
+    ;======================================================================================</p>
+  <p>[DisplayTodayDay]<br />
+    Text=&quot;Today&quot;<br />
+    Meter=STRING<br />
+    X=190<br />
+    Y=85<br />
+    FontColor=#FontColor#<br />
+    FontSize=13<br />
+    StringAlign=RIGHT<br />
+    StringStyle=NORMAL<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1</p>
+  <p>[DisplayTodayDesc]<br />
+    MeasureName=GetTodayDesc<br />
+    Meter=STRING<br />
+    X=190<br />
+    Y=105<br />
+    FontColor=#FontColor#<br />
+    FontSize=13<br />
+    StringAlign=RIGHT<br />
+    StringStyle=NORMAL<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1</p>
+  <p>[DisplayTodayHigh]<br />
+    MeasureName=GetTodayHigh<br />
+    Meter=STRING<br />
+    X=325<br />
+    Y=75<br />
+    FontColor=#FontColor#<br />
+    StringStyle=NORMAL<br />
+    FontSize=36<br />
+    StringAlign=RIGHT<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1<br />
+    Postfix=&quot;°/&quot;</p>
+  <p>[DisplayTodayLow]<br />
+    MeasureName=GetTodayLow<br />
+    Meter=STRING<br />
+    X=315<br />
+    Y=75<br />
+    FontColor=#FontColor#<br />
+    StringStyle=NORMAL<br />
+    FontSize=36<br />
+    StringAlign=LEFT<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1<br />
+    Postfix=&quot;°&quot;</p>
+  <p>[DisplayTodayIcon]<br />
+    MeasureName=GetTodayIcon<br />
+    Meter=IMAGE<br />
+    H=64<br />
+    W=64<br />
+    X=430<br />
+    Y=70<br />
+    Hidden=0</p>
+  <p>;======================================================================================<br />
+    ;Display weather for tomorrow<br />
+    ;======================================================================================</p>
+  <p>[DisplayTomorrowDay]<br />
+    MeasureName=GetTomorrowDay<br />
+    Meter=STRING<br />
+    X=190<br />
+    Y=155<br />
+    FontColor=#FontColor#<br />
+    FontSize=13<br />
+    StringAlign=RIGHT<br />
+    StringStyle=NORMAL<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1</p>
+  <p>[DisplayTomorrowDesc]<br />
+    MeasureName=GetTomorrowDesc<br />
+    Meter=STRING<br />
+    X=190<br />
+    Y=175<br />
+    FontColor=#FontColor#<br />
+    FontSize=13<br />
+    StringAlign=RIGHT<br />
+    StringStyle=NORMAL<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1</p>
+  <p>[DisplayTomorrowHigh]<br />
+    MeasureName=GetTomorrowHigh<br />
+    Meter=STRING<br />
+    X=325<br />
+    Y=145<br />
+    FontColor=#FontColor#<br />
+    StringStyle=NORMAL<br />
+    FontSize=36<br />
+    StringAlign=RIGHT<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1<br />
+    Postfix=&quot;°/&quot;</p>
+  <p>[DisplayTomorrowLow]<br />
+    MeasureName=GetTomorrowLow<br />
+    Meter=STRING<br />
+    X=315<br />
+    Y=145<br />
+    FontColor=#FontColor#<br />
+    StringStyle=NORMAL<br />
+    FontSize=36<br />
+    StringAlign=LEFT<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1<br />
+    Postfix=&quot;°&quot;</p>
+  <p>[DisplayTomorrowIcon]<br />
+    MeasureName=GetTomorrowIcon<br />
+    Meter=IMAGE<br />
+    H=64<br />
+    W=64<br />
+    X=430<br />
+    Y=140<br />
+    Hidden=0</p>
+  <p>;======================================================================================<br />
+    ;Display weather for the day after tomorrow<br />
+    ;======================================================================================</p>
+  <p>[DisplayDayAfterDay]<br />
+    MeasureName=GetDayAfterDay<br />
+    Meter=STRING<br />
+    X=190<br />
+    Y=225<br />
+    FontColor=#FontColor#<br />
+    FontSize=13<br />
+    StringAlign=RIGHT<br />
+    StringStyle=NORMAL<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1</p>
+  <p>[DisplayDayAfterDesc]<br />
+    MeasureName=GetDayAfterDesc<br />
+    Meter=STRING<br />
+    X=190<br />
+    Y=245<br />
+    FontColor=#FontColor#<br />
+    FontSize=13<br />
+    StringAlign=RIGHT<br />
+    StringStyle=NORMAL<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1</p>
+  <p>[DisplayDayAfterHigh]<br />
+    MeasureName=GetDayAfterHigh<br />
+    Meter=STRING<br />
+    X=325<br />
+    Y=215<br />
+    FontColor=#FontColor#<br />
+    StringStyle=NORMAL<br />
+    FontSize=36<br />
+    StringAlign=RIGHT<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1<br />
+    Postfix=&quot;°/&quot;</p>
+  <p>[DisplayDayAfterLow]<br />
+    MeasureName=GetDayAfterLow<br />
+    Meter=STRING<br />
+    X=315<br />
+    Y=215<br />
+    FontColor=#FontColor#<br />
+    StringStyle=NORMAL<br />
+    FontSize=36<br />
+    StringAlign=LEFT<br />
+    StringEffect=Shadow<br />
+    FontFace=#Font#<br />
+    Antialias=1<br />
+    Postfix=&quot;°&quot;</p>
+  <p>[DisplayDayAfterIcon]<br />
+    MeasureName=GetDayAfterIcon<br />
+    Meter=IMAGE<br />
+    H=64<br />
+    W=64<br />
+    X=430<br />
+    Y=210<br />
+    Hidden=0</p>
+</div>
+</body>
+</html>

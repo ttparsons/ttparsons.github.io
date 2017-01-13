@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link href="../css/templatemo_style.css" rel="stylesheet" type="text/css" />
+
+<link href="../css/jquery.ennui.contentslider.css" rel="stylesheet" type="text/css" media="screen,projection" />
+
+</head>
+
+<body>
+<h3>Google Traffic Route Alternatives</h3>
+<p>This tutorial is a continuation of my other program, Google Traffic Grabber (see left).</p>
+<p>&nbsp;</p>
+<h4>The Details</h4>
+<p>If you were interested in my tasker script to grab traffic information from Google, you might now be interested in taking it further by getting traffic for an alternate route. There are several ways to do this using the Google Maps API, but unfortunately, none of them seem to work that well.</p>
+<p>First, you could add <strong>&amp;alternatives=true</strong> to your request to the API to get multiple routes, but the problem is that the summary name that Google gives them in many cases is identical. For example, you might have the script tell you to take either I-405 with 5 minutes of traffic or I-405 with 10 minutes of traffic. Not super useful. You could dig into the rest of the results to get something that would distinguish the two routes from each other (because the API also returns the step by step directions) but that would be tricky since they would change depending on the traffic and you don't want to have to read the whole thing or else you'd just open up Google maps, right?</p>
+<p>Second, the API lets you add stopovers on your route with the <strong>&amp;waypoints=wherever</strong> argument. The problem with this is twofold, first you don't want to stop, and second it seems like doing this makes Google stop returning the traffic information. The API says you can prefix any waypoint with <strong>|via:somewhere</strong> in order to influence the route without stopping, but this still assumes you have at least 1 stopover. You can't use it to influence the route without adding a stop.</p>
+<p>That leaves us with our last option - simply getting directions from point A to B, and then from point B to C, and adding the traffic times together. This workaround lets you set the alternative route you want, even if it is a pain. To do so you just have to pick a point somewhere in the middle of what your preferred alternate route would be. You have to be careful picking your point, however, because Google maps usually assumes you're on one side of the street or another. That means that it might assume you are on the wrong side of the street to go the direction you want, and thus make you take a giant U-turn, adding a lot of false traffic time. I think the best way to avoid this is to make your midpoint be the middle of a big 4-way intersection. You can do this by using Google Maps in your browser - just try getting directions to and from your half way point to make sure it looks good. Once you have that, all you need to do now is duplicate the previous script twice, but with a simple modification. </p>
+<p>You may have noticed that our previous script returns traffic like so: &quot;20 mins&quot;. We can't do math on this, as it's text, not a straight number. Luckily, to avoid this, all you need to do is change part of the javascriptlet action from reading<strong> traffic.text;</strong> to <strong>traffic.value;</strong> because  Google actually already reports the raw time in seconds.</p>
+<p>Once you've made this modification, what you want to do next is get the traffic from point A to B and store it in a variable. Then get the traffic from point B to C and store it in a variable. Add the two together, divide by 60 to convert to minutes, round them, and you're good to go! This will result in  a good estimate of the travel time in traffic using your alternate route.</p>
+</body>
+</html>

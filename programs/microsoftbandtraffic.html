@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link href="../css/templatemo_style.css" rel="stylesheet" type="text/css" />
+
+<link href="../css/jquery.ennui.contentslider.css" rel="stylesheet" type="text/css" media="screen,projection" />
+
+</head>
+
+<body>
+<h3>Microsoft Band Traffic &amp; Other Feeds</h3>
+<p>This guide walks you through how to create your own Microsoft Band tile that tells you the traffic to/from work. The Microsoft band is a wearable fitness and smartwatch that has a number of useful features for a pretty nice price. Microsoft has made a cool web tool that lets you build your own apps for the watch by just dragging and dropping. We can combine this with the free Google Directions API in order to display traffic info on the watch!</p>
+<p>&nbsp;</p>
+<p><center>
+  <p><img src="../images/programs/micoband/preview.png" width="409" height="135" /></p>
+  <p>&nbsp;</p>
+</center></p>
+<h4>Featured!</h4>
+<p>Thanks to <a href="https://www.reddit.com/r/MicrosoftBand/" target="new">/r/MicrosoftBand</a> on Reddit for featuring my guide on how to do this! </p>
+<p>&nbsp;</p>
+<p><center><img src="../images/programs/micoband/redditsticky.PNG" width="546" height="266" /></center></p>
+<p>&nbsp;</p>
+<h4>The Details</h4>
+<p>First, if you haven't followed my other guides on how to get an API key for Google Directions, we'll do that now. We have to do this first, so that we can access the traffic data from Google. Follow the instructions below:</p>
+
+<div id="codeblock">
+  <p>First, get a google maps API account here: <a href="https://developers.google.com/maps/" target="new">https://developers.google.com/maps/</a><span data-text="[1] " title="press 1 to open link"> </span>Click &quot;Get Started&quot; and then click on Google Maps Android API. Then click on &quot;Get a Key&quot;. Create a new project and name it whatever you want. Generate an API key, and take note of it. From here on out, I will refer to this key as YOUR_API_KEY.
+ </p>
+  <p><strong>Side note: </strong>At some point, it may ask you to enter a credit card. I don't think you have to if you don't want to, but I think it gives you more free API requests per day. You shouldn't exceed the free 2,500 requests per day anyhow.</p>
+  <p>Click on the &quot;Overview&quot; button on the left tab (of the <a href="https://console.developers.google.com/apis" target="new">API manager screen</a>), then expand the Google Maps APIs section. Click on &quot;Google Maps Directions API&quot;, and then enable it at the top. From here, you can also visit the USAGE tab to see how many requests you have made for directions, or visit the QUOTAS tab to limit your daily quota to the free amount so you never get billed (or, at least that's my understanding).</p>
+</div>
+<p>Once you have an API key, we can proceed with making our tile app! Just follow the directions below: </p>
+<p>1. <a href="https://developer.microsofthealth.com/WebTile" target="new">Click on this link</a> to be taken to the Microsoft Band Developers Page</p>
+<p>2. Click on the blue <strong>Get Started</strong> button</p>
+<p>3. At the top, click on Multiple Page Tile. We have to choose this one, because if you choose single page you can only use one JSON feed to get your data. We need 3 for our purposes, even though we only really need 1 page for our tile.</p>
+<p><center><img src="../images/programs/micoband/1.PNG" width="279" height="63" /></center></p>
+<p>4. Now select this layout: </p>
+<p><center>
+  <p><img src="../images/programs/micoband/2.PNG"/></p>
+  <p>&nbsp;</p>
+</center></p>
+<p>5. You will now be asked to enter a URL to get the data from. You're going to copy the URL below, but make some modifications first. Replace the <font color="red">red text</font> with your origin (where you will be coming from - for example, your home address). Use plus signs for spaces - For example, if you live at 102 Apple Street 89213 enter 102+Apple+Street+89123. Replace the <font color="green">green text</font> with your destination, using the same format as above (for example, use your work address). Finally, replace the <font color="yellow">yellow text</font> with the API key you got from Google above.</p>
+<div id="codeblock">
+https://maps.googleapis.com/maps/api/directions/json?origin=<font color="red">Replace+Me+With+Origin</font><br />&destination=<font color="Green">Replace+Me+With+Destination</font>&travelmode=driving&departure_time=now<br>&key=<font color="yellow">Replace+Me+With+YOUR_API_KEY</font>
+</div>
+<p>6. Before you copy your modified URL into the box on Microsoft's website, paste it into your browser and hit enter. You should see a long list of code that begins with the words "geocoded_waypoints". If you see this, then you're on the right track! If not, it will give you an error. Read the error and try to fix it. For example, if it says INVALID API KEY, then your API key is incorrect - take another look to make sure it is right.</p>
+<p>7. Now, press CTRL+F on this same page of code and search for &quot;traffic&quot; (without the quotes). If you find it, then you are good to go! Skip this step. If you do not find it, then you haven't set up your API key correctly (Google requires you to have a working API key to access their traffic data). Return to the Google API Manager (linked above) and make sure you have really enabled the Google <strong>Directions</strong> API (not any others!). When it is working correctly, you should be able to find &quot;traffic&quot; on the page. Be sure to keep refreshing the page after you make any changes, or else the results won't update!</p>
+<p>8. If everything looks good, then go ahead and paste the URL you made into the box on Microsoft's website. Save a copy though! You will need it again!</p>
+<p>9. You will now see something that looks like the following:</p>
+<p>&nbsp;</p>
+<p><center>
+  <p><img src="../images/programs/micoband/3.PNG"/></p>
+  <p>&nbsp;</p>
+</center></p>
+
+<p>10. Go ahead and click the plus sign that is located to the top right (as seen in the above image). Microsoft will ask you for another URL. This time, you can paste the same URL but switch your origin and destinations. Now you have traffic coming and going! Do this, and then click on the plus once more. This time paste the following URL, except change the part in yellow to be your time zone. Mine is Pacific Standard Time (PST), but yours may be different.</p>
+<div id="codeblock">http://www.timeapi.org/<font color="yellow">pst</font>/now.json</div>
+
+<p>11. Your Microsoft page should now look like the following (notice the 3 tabs):</p>
+<p>&nbsp;</p>
+<p><center>
+  <p><img src="../images/programs/micoband/4.PNG"/></p>
+  <p>&nbsp;</p>
+</center></p>
+<p>12. Perfect! Now we can add icons to our web tile by clicking on the pencil icons in the tile preview pane. For my tile, I chose icons to designate work, home, and a clock (you'll see why soon!). Here's a <a href="../downloads/band_icons_final.rar">download link</a> if you'd like to use the same ones. There's also a car icon, which we can use as the main image for our tile.</p>
+<p>&nbsp;</p>
+<p><center>
+  <p><img src="../images/programs/micoband/5.PNG"/></p>
+  <p>&nbsp;</p>
+</center></p>
+<p>13. Next, all you have to do is drag and drop the parts of the code on the right that you want to show up on the left! Start with code tab #1. The first piece of code you are looking for is at the very bottom of the code, so scroll all the way down. You're looking for a line that says &quot;routes[0].summary = &quot; that is followed most likely by a road or highway you use to get to home or work! This is a nice summary Google gives to let you know which route you should take to get to work the fastest. Drag this piece of code onto one of the 3 lines saying &quot;Caption&quot; in the preview pane. If done correctly, it should automatically propagate that field with that piece of information. Make sure you drag it to the right spot (i.e., if it's the way you get to work then make sure you drag it next to the work icon! Not next to home!). </p>
+<p>14. Next, scroll all the way back to the top and look for another piece of code that reads &quot;routes[0].legs[0].duration_in_traffic.text =&quot;. It should be about 2 drags of the mouse wheel down. Drag and drop this piece of code right next to the piece you dropped a second ago. Now you've got your fastest route and the time it will take in traffic!</p>
+<p>15. Repeat steps 13 and 14 using tab 2 of the code box, this time dragging it next to the other icon. Now you should have your route and travel time for the opposite direction.</p>
+<p>16. Finally, go to code tab 3 and drag the only line of code there onto the last line, next to the clock. This is the current time, which we add so we can tell when our Band pulled the traffic info. You wouldn't want to look at it without realizing the information was from 2 hours ago! When you're done, it should look something like this:</p>
+<p><center>
+  <p><img src="../images/programs/micoband/6.PNG"/></p>
+  <p>&nbsp;</p>
+</center>
+<p>17. Click next, and then skip the next page that asks if you want to set up notifications. Finally, on the last page, you can set the color scheme and give your tile an icon (there's a car icon included in my download pack above). When you're done, you can click a button to download your tile (don't submit it - that gives it to the public which we don't want - it has your own address and your own API key in it!). Send the tile to yourself as an email attachment, and then open it on your phone. It should launch via the Microsoft Health app. Viola! You made your own traffic tile! You can use the same process to also make things like web feeds for your favorite sites.</p>
+<p><center>
+  <p><img src="../images/programs/micoband/7.PNG"/></p>
+  <p>&nbsp;</p>
+</center>
+<strong>Credit for the icons:</strong> <a href="https://www.iconfinder.com/icons/285810/auto_automobile_car_sedan_vehicle_icon#size=20" target="new">Car</a> - <a href="https://www.iconfinder.com/icons/352228/work_icon#size=20" target="new">Work</a> - <a href="https://www.iconfinder.com/icons/763224/building_estate_home_house_property_real_icon#size=20" target="new">Home</a> - <a href="https://www.iconfinder.com/icons/326483/access_clock_time_icon#size=20" target="new">Clock</a>
+</body>
+</html>

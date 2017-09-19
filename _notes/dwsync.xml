@@ -6,12 +6,10 @@
 <file name="news.html" server="ftp.travisparsons.site88.net/public_html/" local="130545068740000000" remote="130970932800000000" Dst="1" />
 <file name="services.html" server="ftp.travisparsons.site88.net/public_html/" local="130545067780000000" remote="130970932800000000" Dst="1" />
 <file name="blanktemplate.html" server="ftp.travisparsons.site88.net/public_html/" local="130970847037147843" remote="130970962200000000" Dst="1" />
-<file name=".htaccess" server="ftp.travisparsons.site88.net/public_html/" local="130434590170000000" remote="130970962200000000" Dst="1" />
 <file name="cv.html" server="ftp.travisparsons.site88.net/public_html/" local="130970855349131177" remote="130970963400000000" Dst="1" />
 <file name="photography.html" server="ftp.travisparsons.site88.net/public_html/" local="130970855231135099" remote="130970963400000000" Dst="1" />
 <file name="programming.html" server="ftp.travisparsons.site88.net/public_html/" local="130970855124256961" remote="130970963400000000" Dst="1" />
 <file name="projects.html" server="ftp.travisparsons.site88.net/public_html/" local="130970855024158578" remote="130970963400000000" Dst="1" />
-<file name=".htaccess" server="ssh.ocf.berkeley.edu/public_html/" local="130434590170000000" remote="130992681710000000" Dst="1" />
 <file name="blanktemplate.html" server="ssh.ocf.berkeley.edu/public_html/" local="130970847030000000" remote="130992681720000000" Dst="1" />
 <file name="contact.html" server="ssh.ocf.berkeley.edu/public_html/" local="131261500050319935" remote="131261500050000000" Dst="1" />
 <file name="cv.html" server="ssh.ocf.berkeley.edu/public_html/" local="131261499460756486" remote="131261500090000000" Dst="1" />

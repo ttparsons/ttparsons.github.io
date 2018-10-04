@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<juiceboxgallery 
+
+	useFlickr="true"
+	flickrUserName="ttparsons"
+	galleryTitle="Travis' Photography"
+	useThumbDots="false"
+	useFullscreenExpand="false"
+	backgroundColor="rgba(18,18,19,1)"
+	indexPageName="ind3ex.html"/>
